@@ -1,0 +1,54 @@
+[package]
+name = "microphone-cleaner"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+license = "MIT"
+description = "Local neural microphone cleanup for Windows calls"
+repository = "https://github.com/siarheisinelnikau/microphone-cleaner"
+build = "build.rs"
+
+[dependencies]
+nnnoiseless = { path = "vendor/nnnoiseless", default-features = false }
+rtrb = "=0.3.2"
+rubato = "=0.16.2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "=0.10.9"
+semver = "=1.0.28"
+reqwest = { version = "=0.12.28", default-features = false, features = ["blocking", "json", "rustls-tls"] }
+
+[target.'cfg(windows)'.dependencies]
+cpal = "=0.17.3"
+windows-sys = { version = "=0.61.2", features = [
+    "Win32_Foundation", "Win32_Graphics_Gdi", "Win32_Graphics_Dwm", "Win32_UI_WindowsAndMessaging",
+    "Win32_UI_Controls", "Win32_UI_HiDpi", "Win32_UI_Shell",
+    "Win32_System_LibraryLoader", "Win32_System_Threading", "Win32_System_Com",
+    "Win32_Security", "Win32_Storage_FileSystem", "Win32_System_ProcessStatus",
+    "Win32_System_SystemServices", "Win32_UI_Input_KeyboardAndMouse"
+] }
+
+[build-dependencies]
+winresource = "=0.1.34"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+
+[profile.dev.package.nnnoiseless]
+opt-level = 3
+
+[profile.dev.package.realfft]
+opt-level = 3
+
+[profile.dev.package.rustfft]
+opt-level = 3
+
+[profile.dev.package.rubato]
+opt-level = 3
+
+[lints.rust]
+unsafe_op_in_unsafe_fn = "deny"
+
+[lints.clippy]
+undocumented_unsafe_blocks = "warn"

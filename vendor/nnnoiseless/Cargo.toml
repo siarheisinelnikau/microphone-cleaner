@@ -1,0 +1,23 @@
+[package]
+name = "nnnoiseless"
+version = "0.5.2"
+authors = ["Joe Neeman <joeneeman@gmail.com>"]
+edition = "2018"
+license = "BSD-3-Clause"
+repository = "https://github.com/jneem/nnnoiseless"
+description = "RNNoise with an owned, preallocated RealFFT adapter"
+
+[dependencies]
+once_cell = "=1.21.4"
+realfft = "=3.5.1"
+
+[features]
+default = []
+
+[lints.rust]
+unexpected_cfgs = { level = "allow", check-cfg = ['cfg(cargo_c)'] }
+
+[package.metadata.upstream]
+ref = "v0.5.2"
+model-git-blob = "ea14665bb51a81a28f80dbdc91d5487ccbd48144"
+changes = "Replace easyfft thread-local plans with owned RealFFT plans/scratch buffers. Preserve neural weights, features and normalization. Exclude optional CLI/training surfaces."
